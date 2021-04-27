@@ -11,7 +11,7 @@ const protect = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-router.route("/").post(protect, createFashioner).get(getAllFashioners);
+router.route("/").post( createFashioner).get(getAllFashioners);
 router
   .route("/:_id")
   .get(getSingleFashioner)
