@@ -27,7 +27,7 @@ const getSingleFashioner = async (req, res) => {
 //update a Fashioner
 const updateFashioner = async (req, res) => {
   const foundFashioner = await Fashioner.findById(req.params._id);
-  if (foundTrainee) {
+  if (foundFashioner) {
     (foundFashioner.name = req.body.name),
       (foundFashioner.gender = req.body.gender),
       (foundFashioner.location = req.body.location),
