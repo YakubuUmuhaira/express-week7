@@ -21,7 +21,7 @@ const addUser = async (req, res) => {
     email: req.body.email,
     password: hashedPassword,
   });
-  await newuser.save();
+  await newUser.save();
   res.status(201).json({
     _id: newUser._id,
     name: newUser.name,
