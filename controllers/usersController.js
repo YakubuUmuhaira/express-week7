@@ -1,7 +1,7 @@
 const User = require("../models/userSchema");
 const bcrypt = require("bcryptjs");
-const getToken = require("../utils/getToken");
 const { validateAddUser } = require("../validations/userValidations");
+const getToken = require("../utils/getToken");
 
 const addUser = async (req, res) => {
   //validate a user
@@ -9,7 +9,7 @@ const addUser = async (req, res) => {
   if (error) return res.status(403).send(error.details[0].message);
 
   //complexity level and hashing using bcrypt
-  const salt = await bcrypt.genSalt(10);
+  const salt = await bcrypt.genSalt(8);
   const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
   //find user from db
@@ -31,9 +31,9 @@ const addUser = async (req, res) => {
 };
 
 const userLogin = async (req, res) => {
-  //user verification
+  //staff verification
   const user = await User.findOne({ email: req.body.email });
-  if (!user) return res.status(404).send("user not found");
+  if (!user) return res.status(404).send("Account does not exist");
 
   //password verification
   const verifiedPassword = await bcrypt.compare(
@@ -41,17 +41,17 @@ const userLogin = async (req, res) => {
     user.password
   );
   if (!verifiedPassword)
-    return res.status(404).send("invalid email or password");
+    return res.status(404).send("email does not match with password");
 
-  //   res.header("authorization", token_id).send(token_id);
+  // res.header("authorization", token_id).send(token_id);
 
-  //   res.json({ user });
+  // res.json({ staff });
   res.status(202).json({
-    _id: newUser._id,
-    name: newUser.name,
-    email: newUser.email,
-    token: getToken(newUser._id),
-  });
+    _id:user._id,
+    name:user.name,
+    email:user.email,
+    token:getToken(user._id)
+  })
 };
 
 module.exports = { addUser, userLogin };
